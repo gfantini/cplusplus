@@ -1,0 +1,14 @@
+#pragma once
+
+class Animal{
+  // these can be seen anywhere
+public:
+  virtual void speak() = 0;
+  // these can be accessed / modified just from this class
+  // not even derived classes can!
+private:
+  const string fName;
+  // these can be accessed / modified from this class, and derived classes
+protected:
+  void SetName(cstring name)
+};
