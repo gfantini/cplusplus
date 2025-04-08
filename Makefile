@@ -1,8 +1,20 @@
 # makefiles work with TABS, not spaces
 # definition of a variable, which is a string, always
-OBJS := bld/printer.o bld/dog.o bld/animal.o
 CC	:= g++
-CC_OPTS	:= -Wc++11-extensions
+CFLAGS	:= -Wc++11-extensions
+
+# Trova tutti i file sorgenti con estensione .cc nella cartella src/
+SRC_DIR := ./src
+SRC_EXT := .cc
+SRCS = $(wildcard $(SRC_DIR)/*$(SRC_EXT))
+
+# Sostituisci 
+# $(variabile:pattern=replacement)
+# % -> viene lasciato così com'è
+OBJ_DIR := ./bld
+OBJ_EXT := .o
+OBJS := $(SRCS:$(SRC_DIR)/%$(SRC_EXT)=$(OBJ_DIR)/%$(OBJ_EXT))
+
 
 # also rules, the ":" reads "depends on"
 # this rule relates to the file ./hello, which doesn't depend on anything
@@ -12,26 +24,24 @@ all : main
 	echo "[make all]"
 	echo $@
 
-hello:
-	echo "Hello World"
-
-# compiles main from main.cpp
+# compiles main (target) from main.cpp (dependancy)
 # $@ gets substituted by the target (i.e. whatever comes before :)
 # $^ gets substituted by the dependancies (i.e. whatever comes after :)
 # $< gets substituted by the first dependancy (i.e. first string after :)
 main: main.cpp $(OBJS)
 	echo "building $<"
-	$(CC) $(CC_OPTS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 # compilazione object file
-bld/printer.o : src/printer.cc src/printer.hh
-	$(CC) $(CC_OPTS) -c src/printer.cc -o bld/printer.o
+# per ogni file che si chiama src/<file>.cc, crea una regola
+bld/%.o : src/%.cc
+	$(CC) $(CFLAGS) -c $^ -o $@ 
 
-bld/dog.o : src/dog.cc 
-	$(CC) $(CC_OPTS) -c src/dog.cc -o bld/dog.o
-
-bld/animal.o : src/animal.cc
-	$(CC) $(CC_OPTS) -c src/animal.cc -o bld/animal.o
+# debug
+debug :
+	echo $@
+	echo $(SRCS)
+	echo $(OBJS)
 
 # cleans executable
 clean:
