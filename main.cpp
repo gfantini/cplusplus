@@ -2,6 +2,11 @@
 #include "src/printer.hh"
 #include "src/dog.hh"
 
+// shared library "libname.so"
+// to compile g++ -o main main.cpp -L./path_to_lib/ -lname
+// to execute we need to add the .so path to $LD_LIBRARY_PATH
+#include "sl_src/add.hh"
+
 int main()
 {
   // I'd better use local variables, rather than ptrs but..
@@ -24,5 +29,8 @@ int main()
   Dog d("rajah");
   d.Speak();
   
+  // use a shared library
+  std::cout << "shared 1+1 makes " << add(1,1) << std::endl;
+
   return 0;
 }

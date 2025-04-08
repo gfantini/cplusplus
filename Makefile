@@ -28,9 +28,10 @@ all : main
 # $@ gets substituted by the target (i.e. whatever comes before :)
 # $^ gets substituted by the dependancies (i.e. whatever comes after :)
 # $< gets substituted by the first dependancy (i.e. first string after :)
+# adding also shared library called "add"
 main: main.cpp $(OBJS)
 	echo "building $<"
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@  -L./sl_src/ -ladd
 
 # compilazione object file
 # per ogni file che si chiama src/<file>.cc, crea una regola
